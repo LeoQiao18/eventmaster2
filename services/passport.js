@@ -29,7 +29,16 @@ passport.use(
           // already have a record of this user
           done(null, existingUser);
         } else {
-          new User({ googleId: profile.id })
+          new User({
+            googleId: profile.id,
+            displayName: profile.displayName,
+            name: {
+              familyName: profile.name.familyName,
+              givenName: profile.name.givenName
+            },
+            email: profile.emails[0].value,
+            image: profile.photos[0].value
+          })
             .save()
             .then(user => done(null, user));
         }
