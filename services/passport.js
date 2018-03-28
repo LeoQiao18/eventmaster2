@@ -27,7 +27,20 @@ passport.use(
       User.findOne({ googleId: profile.id }).then(existingUser => {
         if (existingUser) {
           // already have a record of this user
-          done(null, existingUser);
+          existingUser.update(
+            {
+              displayName: profile.displayName,
+              name: {
+                familyName: profile.name.familyName,
+                givenName: profile.name.givenName
+              },
+              email: profile.emails[0].value,
+              image: profile.photos[0].value
+            },
+            (err, updatedUser) => {
+              done(null, updatedUser);
+            }
+          );
         } else {
           new User({
             googleId: profile.id,
