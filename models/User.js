@@ -6,7 +6,8 @@ const userSchema = new Schema({
   displayName: String,
   name: { familyName: String, givenName: String },
   email: String,
-  image: String
+  image: String,
+  isAdmin: Boolean
 });
 
 mongoose.model("users", userSchema);

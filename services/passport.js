@@ -50,7 +50,8 @@ passport.use(
             givenName: profile.name.givenName
           },
           email: profile.emails[0].value,
-          image: profile.photos[0].value
+          image: profile.photos[0].value,
+          isAdmin: false
         }).save();
         // pass the user document to passport
         done(null, newUser);
