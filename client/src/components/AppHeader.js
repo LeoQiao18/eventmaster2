@@ -1,53 +1,58 @@
 import React from "react";
-import { Layout, Menu, Dropdown, Icon } from "antd";
+import { connect } from "react-redux";
+import { Layout, Menu, Dropdown, Icon, Avatar } from "antd";
 
 const { Header } = Layout;
 
-const AppHeader = () => {
-  const loginDropdown = (
+const AppHeader = ({ auth }) => {
+  console.log(auth);
+
+  const renderDropdown = () => (
     <Menu>
       <Menu.Item key="0">
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.alipay.com/"
-        >
-          1st menu item
+        <a>
+          <Icon type="user" /> {auth.displayName}
         </a>
       </Menu.Item>
       <Menu.Item key="1">
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.taobao.com/"
-        >
-          2nd menu item
+        <a>
+          <Icon type="inbox" /> {auth.email}
         </a>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="3" disabled>
-        3rd menu item（disabled）
+      <Menu.Item key="1">
+        <a href="/api/logout">
+          <Icon type="poweroff" /> Log out
+        </a>
       </Menu.Item>
     </Menu>
   );
 
+  const renderLogin = () => (
+    <Menu
+      mode="horizontal"
+      selectable={false}
+      style={{ lineHeight: "64px", float: "right" }}
+    >
+      <Menu.Item key="1">
+        <Dropdown trigger={["click"]} overlay={renderDropdown()}>
+          <Avatar src={auth.image} />
+        </Dropdown>
+      </Menu.Item>
+    </Menu>
+  );
+
+  const checkAuthRender = auth ? renderLogin() : null;
+
   return (
     <Header style={{ background: "#fff", padding: 0 }}>
-      <Menu
-        mode="horizontal"
-        selectable={false}
-        style={{ lineHeight: "64px", float: "right" }}
-      >
-        <Menu.Item key="1">
-          <Dropdown overlay={loginDropdown}>
-            <a>
-              Leo Qiao <Icon type="down" />
-            </a>
-          </Dropdown>
-        </Menu.Item>
-      </Menu>
+      {checkAuthRender}
     </Header>
   );
 };
 
-export default AppHeader;
+function mapStateToProps({ auth }) {
+  return { auth };
+}
+
+export default connect(mapStateToProps)(AppHeader);
