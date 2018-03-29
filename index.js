@@ -26,7 +26,7 @@ require("./routes/authRoutes")(app);
 require("./routes/loginRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.state("client/build"));
+  app.use(express.static("client/build"));
 
   const path = require("path");
   app.get("*", redirectNoAuth, (req, res) => {
