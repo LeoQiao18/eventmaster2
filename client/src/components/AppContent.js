@@ -14,7 +14,6 @@ const AppContent = ({ children }) => {
       <div
         style={{
           padding: 24,
-          background: "#fff",
           height: "100%",
           overflowY: "scroll"
         }}
