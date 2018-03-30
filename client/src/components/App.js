@@ -2,21 +2,23 @@ import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { Layout } from "antd";
-import * as actions from "../actions";
+import { fetchUser, fetchEventsList } from "../actions";
 
 import AppHeader from "./AppHeader";
 import AppSider from "./AppSider";
 import AppFooter from "./AppFooter";
 import AppContent from "./AppContent";
 
+import AddEvents from "./AddEvents";
+
 const Landing = () => <div>Landing</div>;
-const AddEvents = () => <div>AddEvents</div>;
 const EditEvents = () => <div>EditEvents</div>;
 const Event1 = () => <div>Event1</div>;
 
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
+    this.props.fetchEventsList();
   }
 
   componentDidUpdate() {
@@ -54,4 +56,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps, actions)(App);
+export default connect(mapStateToProps, { fetchUser, fetchEventsList })(App);

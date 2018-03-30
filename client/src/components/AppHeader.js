@@ -20,7 +20,7 @@ const AppHeader = ({ auth }) => {
         </a>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="1">
+      <Menu.Item key="3">
         <a href="/api/logout">
           <Icon type="poweroff" /> Log out
         </a>

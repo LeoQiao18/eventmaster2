@@ -16,7 +16,7 @@ const AppContent = ({ children }) => {
           padding: 24,
           background: "#fff",
           height: "100%",
-          overflow: "scroll"
+          overflowY: "scroll"
         }}
       >
         {children}
