@@ -6,13 +6,7 @@ const { Sider } = Layout;
 
 const AppSider = () => {
   return (
-    <Sider
-      breakpoint="lg"
-      collapsedWidth="0"
-      onCollapse={(collapsed, type) => {
-        console.log(collapsed, type);
-      }}
-    >
+    <Sider breakpoint="lg" collapsedWidth="0">
       <div
         style={{
           height: 32,
