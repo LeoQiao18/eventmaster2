@@ -1,6 +1,6 @@
 module.exports = (req, res, next) => {
     if (req.user) {
-        return res.send("You must be unauthenticated!");
+        return res.state(403).send("You must be unauthenticated!");
     }
     next();
 };

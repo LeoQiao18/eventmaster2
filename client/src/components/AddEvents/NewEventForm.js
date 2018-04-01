@@ -11,15 +11,24 @@ import {
     Row,
     Col
 } from "antd";
-import moment from "moment";
+import axios from "axios";
+import { connect } from "react-redux";
+import { postEvents } from "../../actions/index";
 import "./new-event-form.css";
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
+const dateFormat = "YYYYMMDD";
+const timeFormat = "HH:mm";
+
 let uid = 0;
 
 class NewEventForm extends Component {
+    state = {
+        posting: false
+    };
+
     componentDidMount() {
         const { form } = this.props;
         const keys = form.getFieldValue("keys");
@@ -56,14 +65,33 @@ class NewEventForm extends Component {
         });
     };
 
+    postEvents = async events => {
+        await this.setState({ posting: true });
+
+        this.props.postEvents(events, () => {
+            const { uid, onRemove } = this.props;
+            onRemove(uid);
+        });
+    };
+
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log("Received values of form: ", values);
+            if (err) {
+                return;
             }
 
-            //TODO: format the Dat-Picker value
+            const date = values.date.format(dateFormat);
+            const events = values.events.map(formEvent => {
+                return {
+                    date: date,
+                    name: formEvent.name,
+                    time: formEvent.time.format(timeFormat),
+                    description: formEvent.description
+                };
+            });
+
+            this.postEvents(events);
         });
     };
 
@@ -103,7 +131,6 @@ class NewEventForm extends Component {
                     md: { span: 18 }
                 }
             };
-            const format = "HH:mm";
 
             return (
                 <FormItem {...formItemLayout} label="Event" key={k}>
@@ -115,7 +142,7 @@ class NewEventForm extends Component {
                                     message: "Time required!"
                                 }
                             ]
-                        })(<TimePicker format={format} />)}
+                        })(<TimePicker format={timeFormat} />)}
                     </FormItem>
 
                     <FormItem {...eventFormItemLayout} hasFeedback>
@@ -155,7 +182,11 @@ class NewEventForm extends Component {
         });
 
         return (
-            <Card bordered={false} style={{ marginTop: 24 }}>
+            <Card
+                loading={this.state.posting}
+                bordered={false}
+                style={{ marginTop: 24 }}
+            >
                 <Form hideRequiredMark onSubmit={this.handleSubmit}>
                     <FormItem {...formItemLayout} label="Date" hasFeedback>
                         {getFieldDecorator("date", {
@@ -204,4 +235,4 @@ class NewEventForm extends Component {
     }
 }
 
-export default Form.create()(NewEventForm);
+export default Form.create()(connect(null, { postEvents })(NewEventForm));

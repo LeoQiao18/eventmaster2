@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
-import eventsListReducer from "./eventsListReducer";
+import eventsReducer from "./eventsReducer";
 
 export default combineReducers({
-  auth: authReducer,
-  eventsList: eventsListReducer
+    auth: authReducer,
+    eventsList: eventsReducer
 });

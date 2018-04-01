@@ -14,8 +14,13 @@ module.exports = app => {
             });
     });
 
-    app.post("/api/events", requireAuth, requireAdmin, (req, res) => {
+    app.post("/api/events", requireAuth, requireAdmin, async (req, res) => {
         console.log(req.body);
-        res.send("POST events");
+
+        const promises = req.body.map(
+            async event => await new Event(event).save()
+        );
+
+        res.status(200).send(await Promise.all(promises));
     });
 };
