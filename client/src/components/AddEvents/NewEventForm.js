@@ -93,7 +93,7 @@ class NewEventForm extends Component {
 
             const filteredEvents = events.filter(e => e != null);
 
-            this.postEvents(events);
+            this.postEvents(filteredEvents);
         });
     };
 
