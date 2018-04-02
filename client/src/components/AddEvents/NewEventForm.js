@@ -93,10 +93,7 @@ class NewEventForm extends Component {
 
             const filteredEvents = events.filter(e => e != null);
 
-            console.log("raw: ", values);
-            console.log("formatted", filteredEvents);
-
-            // this.postEvents(events);
+            this.postEvents(events);
         });
     };
 
