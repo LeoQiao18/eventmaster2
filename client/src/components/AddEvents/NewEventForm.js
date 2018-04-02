@@ -91,7 +91,12 @@ class NewEventForm extends Component {
                 };
             });
 
-            this.postEvents(events);
+            const filteredEvents = events.filter(e => e != null);
+
+            console.log("raw: ", values);
+            console.log("formatted", filteredEvents);
+
+            // this.postEvents(events);
         });
     };
 
