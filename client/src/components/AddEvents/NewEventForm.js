@@ -137,16 +137,37 @@ class NewEventForm extends Component {
             return (
                 <FormItem {...formItemLayout} label="Event" key={k}>
                     <FormItem {...eventFormItemLayout} hasFeedback>
-                        {getFieldDecorator(`events[${k}].time`, {
+                        {getFieldDecorator(`events[${k}].startTime`, {
                             rules: [
                                 {
                                     required: true,
-                                    message: "Time required!"
+                                    message: "Start time required!"
                                 }
                             ]
-                        })(<TimePicker format={timeFormat} />)}
+                        })(
+                            <TimePicker
+                                placeholder="Start time"
+                                format={timeFormat}
+                                minuteStep={15}
+                            />
+                        )}
                     </FormItem>
-
+                    <FormItem {...eventFormItemLayout} hasFeedback>
+                        {getFieldDecorator(`events[${k}].endTime`, {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: "End time required!"
+                                }
+                            ]
+                        })(
+                            <TimePicker
+                                placeholder="End time"
+                                format={timeFormat}
+                                minuteStep={15}
+                            />
+                        )}
+                    </FormItem>
                     <FormItem {...eventFormItemLayout} hasFeedback>
                         {getFieldDecorator(`events[${k}].name`, {
                             rules: [
@@ -156,21 +177,18 @@ class NewEventForm extends Component {
                                     message: "Name required!"
                                 }
                             ]
-                        })(<Input placeholder="name" />)}
+                        })(<Input placeholder="Name" />)}
                     </FormItem>
-
                     <FormItem {...eventFormItemLayout} hasFeedback>
                         {getFieldDecorator(`events[${k}].faculty`, {})(
-                            <Input placeholder="faculty (optional)" />
+                            <Input placeholder="Faculty (optional)" />
                         )}
                     </FormItem>
-
                     <FormItem {...eventFormItemLayout} hasFeedback>
                         {getFieldDecorator(`events[${k}].description`, {})(
-                            <TextArea placeholder="description (optional)" />
+                            <TextArea placeholder="Description (optional)" />
                         )}
                     </FormItem>
-
                     {keys.length > 1 ? (
                         <Icon
                             className="dynamic-delete-button"
