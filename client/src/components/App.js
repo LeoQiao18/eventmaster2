@@ -10,9 +10,9 @@ import AppFooter from "./AppFooter";
 import AppContent from "./AppContent";
 
 import AddEvents from "./AddEvents";
+import EditEvents from "./EditEvents";
 
 const Landing = () => <div>Landing</div>;
-const EditEvents = () => <div>EditEvents</div>;
 const Event1 = () => <div>Event1</div>;
 
 class App extends Component {
