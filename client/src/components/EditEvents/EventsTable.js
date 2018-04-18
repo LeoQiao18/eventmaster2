@@ -1,87 +1,117 @@
 import React, { Component } from "react";
-import { Table } from "antd";
+import { Table, Button, Popconfirm, message } from "antd";
+import { connect } from "react-redux";
+import moment from "moment";
+import { fetchEvents, deleteEvents } from "../../actions";
 
 const columns = [
   {
     title: "Name",
-    dataIndex: "name",
-    sorter: true,
-    render: name => `${name.first} ${name.last}`,
-    width: "20%"
+    dataIndex: "name"
+    // width: "20%"
   },
   {
-    title: "Gender",
-    dataIndex: "gender",
-    filters: [
-      { text: "Male", value: "male" },
-      { text: "Female", value: "female" }
-    ],
-    width: "20%"
+    title: "Date",
+    dataIndex: "date",
+    render: date => moment(date, "YYYYMMDD").format("YYYY-MM-DD")
+    // width: "20%"
   },
   {
-    title: "Email",
-    dataIndex: "email"
+    title: "Start",
+    dataIndex: "startTime"
+    // width: "20%"
+  },
+  {
+    title: "End",
+    dataIndex: "endTime"
+    // width: "20%"
+  },
+  {
+    title: "# of participants",
+    dataIndex: "_participants",
+    render: participants => participants.length
+    // width: "20%"
   }
 ];
 
-class EventsTable extends React.Component {
+class EventsTable extends Component {
   state = {
-    data: [],
-    pagination: {},
-    loading: false
+    loading: false,
+    selectedRowKeys: []
   };
-  handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination };
-    pager.current = pagination.current;
-    this.setState({
-      pagination: pager
-    });
-    this.fetch({
-      results: pagination.pageSize,
-      page: pagination.current,
-      sortField: sorter.field,
-      sortOrder: sorter.order,
-      ...filters
+
+  onSelectChange = selectedRowKeys => {
+    this.setState({ selectedRowKeys });
+  };
+
+  confirm = () => {
+    this.setState({ loading: true, selectedRowKeys: [] });
+    const hide = message.loading("Deleting events...");
+    this.props.deleteEvents(this.state.selectedRowKeys, () => {
+      hide();
+      message.success("Selected events deleted");
+      this.setState({ loading: false });
     });
   };
-  fetch = (params = {}) => {
-    console.log("params:", params);
+
+  fetch = async () => {
     this.setState({ loading: true });
-    // reqwest({
-    //   url: "https://randomuser.me/api",
-    //   method: "get",
-    //   data: {
-    //     results: 10,
-    //     ...params
-    //   },
-    //   type: "json"
-    // }).then(data => {
-    //   const pagination = { ...this.state.pagination };
-    //   // Read total count from server
-    //   // pagination.total = data.totalCount;
-    //   pagination.total = 200;
-    //   this.setState({
-    //     loading: false,
-    //     data: data.results,
-    //     pagination
-    //   });
-    // });
+    await this.props.fetchEvents(() => {
+      this.setState({
+        loading: false
+      });
+    });
   };
-  componentDidMount() {
-    this.fetch();
-  }
+
   render() {
+    const { loading, selectedRowKeys } = this.state;
+    const { events } = this.props;
+
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange
+    };
+    const hasSelected = selectedRowKeys.length > 0;
+
     return (
-      <Table
-        columns={columns}
-        rowKey={record => record.registered}
-        dataSource={this.state.data}
-        pagination={this.state.pagination}
-        loading={this.state.loading}
-        onChange={this.handleTableChange}
-      />
+      <div>
+        <div style={{ marginBottom: 16 }}>
+          <Popconfirm
+            title="Are you sure delete the selected event(s)?"
+            onConfirm={this.confirm}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              type="danger"
+              icon="delete"
+              disabled={!hasSelected}
+              loading={loading}
+            >
+              Delete
+            </Button>
+          </Popconfirm>
+          <span style={{ marginLeft: 8 }}>
+            {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
+          </span>
+        </div>
+        <Table
+          pagination={false}
+          rowSelection={rowSelection}
+          columns={columns}
+          rowKey={record => record._id}
+          dataSource={events}
+          loading={loading}
+        />
+      </div>
     );
   }
 }
 
-export default EventsTable;
+function mapStateToProps({ events }) {
+  return { events };
+}
+
+export default connect(mapStateToProps, { fetchEvents, deleteEvents })(
+  EventsTable
+);

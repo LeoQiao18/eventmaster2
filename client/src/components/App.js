@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { Layout } from "antd";
-import { fetchUser, fetchEventsList } from "../actions";
+import { fetchUser, fetchEvents } from "../actions";
 
 import AppHeader from "./AppHeader";
 import AppSider from "./AppSider";
@@ -11,14 +11,14 @@ import AppContent from "./AppContent";
 
 import AddEvents from "./AddEvents";
 import EditEvents from "./EditEvents";
+import ShowEvent from "../components/ShowEvent";
 
 const Landing = () => <div>Landing</div>;
-const Event1 = () => <div>Event1</div>;
 
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
-    this.props.fetchEventsList();
+    this.props.fetchEvents();
   }
 
   componentDidUpdate() {
@@ -40,7 +40,7 @@ class App extends Component {
                   <Route exact path="/" component={Landing} />
                   <Route exact path="/events/new" component={AddEvents} />
                   <Route exact path="/events/edit" component={EditEvents} />
-                  <Route exact path="/events/1" component={Event1} />
+                  <Route exact path="/events/:eventId" component={ShowEvent} />
                 </AppContent>
                 <AppFooter />
               </Layout>
@@ -56,4 +56,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps, { fetchUser, fetchEventsList })(App);
+export default connect(mapStateToProps, { fetchUser, fetchEvents })(App);

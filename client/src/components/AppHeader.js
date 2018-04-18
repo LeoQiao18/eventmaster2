@@ -5,8 +5,6 @@ import { Layout, Menu, Dropdown, Icon, Avatar } from "antd";
 const { Header } = Layout;
 
 const AppHeader = ({ auth }) => {
-  console.log(auth);
-
   const renderDropdown = () => (
     <Menu>
       <Menu.Item key="0">

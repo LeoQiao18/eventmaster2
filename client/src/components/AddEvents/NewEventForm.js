@@ -10,10 +10,11 @@ import {
   Divider,
   Icon,
   Row,
-  Col
+  Col,
+  message
 } from "antd";
 import { connect } from "react-redux";
-import { postEvents } from "../../actions/index";
+import { postEvents, fetchEvents } from "../../actions/index";
 import "./new-event-form.css";
 
 const FormItem = Form.Item;
@@ -67,10 +68,13 @@ class NewEventForm extends Component {
 
   postEvents = async events => {
     await this.setState({ posting: true });
-
+    const hide = message.loading("Uploading events...", 0);
     this.props.postEvents(events, () => {
+      hide();
+      message.success("New events added");
       const { uid, onRemove } = this.props;
       onRemove(uid);
+      this.props.fetchEvents();
     });
   };
 
@@ -89,11 +93,15 @@ class NewEventForm extends Component {
           startTime: formEvent.startTime.format(timeFormat),
           endTime: formEvent.endTime.format(timeFormat)
         };
-        formEvent.limit ? (formattedEvents.limit = formEvent.limit) : null;
-        formEvent.faculy ? (formattedEvents.faculty = formEvent.faculty) : null;
-        formEvent.description
-          ? (formattedEvents.description = formEvent.description)
-          : null;
+        if (formEvent.limit) {
+          formattedEvents.limit = formEvent.limit;
+        }
+        if (formEvent.faculty) {
+          formattedEvents.faculty = formEvent.faculty;
+        }
+        if (formEvent.description) {
+          formattedEvents.description = formEvent.description;
+        }
 
         return formattedEvents;
       });
@@ -267,4 +275,6 @@ class NewEventForm extends Component {
   }
 }
 
-export default Form.create()(connect(null, { postEvents })(NewEventForm));
+export default Form.create()(
+  connect(null, { postEvents, fetchEvents })(NewEventForm)
+);

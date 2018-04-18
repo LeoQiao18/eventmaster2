@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Layout, Menu, Icon } from "antd";
+import { connect } from "react-redux";
 
 const { Sider } = Layout;
 
@@ -43,4 +44,4 @@ const AppSider = () => {
   );
 };
 
-export default AppSider;
+export default connect()(AppSider);

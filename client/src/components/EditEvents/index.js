@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Button, Icon } from "antd";
+import { Card } from "antd";
 import EventsTable from "./EventsTable";
 
 class EditEvents extends Component {
