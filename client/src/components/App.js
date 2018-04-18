@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { Layout } from "antd";
 import { fetchUser, fetchEvents } from "../actions";
@@ -37,10 +37,16 @@ class App extends Component {
               <Layout style={{ height: "100vh" }}>
                 <AppHeader />
                 <AppContent>
-                  <Route exact path="/" component={Landing} />
-                  <Route exact path="/events/new" component={AddEvents} />
-                  <Route exact path="/events/edit" component={EditEvents} />
-                  <Route exact path="/events/:eventId" component={ShowEvent} />
+                  <Switch>
+                    <Route exact path="/" component={Landing} />
+                    <Route exact path="/events/new" component={AddEvents} />
+                    <Route exact path="/events/edit" component={EditEvents} />
+                    <Route
+                      exact
+                      path="/events/:eventId"
+                      component={ShowEvent}
+                    />
+                  </Switch>
                 </AppContent>
                 <AppFooter />
               </Layout>

@@ -8,29 +8,25 @@ const columns = [
   {
     title: "Name",
     dataIndex: "name"
-    // width: "20%"
   },
   {
     title: "Date",
     dataIndex: "date",
     render: date => moment(date, "YYYYMMDD").format("YYYY-MM-DD")
-    // width: "20%"
   },
   {
     title: "Start",
-    dataIndex: "startTime"
-    // width: "20%"
+    dataIndex: "startTime",
+    render: time => moment(time, "HH:mm").format("h:mm A")
   },
   {
     title: "End",
-    dataIndex: "endTime"
-    // width: "20%"
+    dataIndex: "endTime",
+    render: time => moment(time, "HH:mm").format("h:mm A")
   },
   {
     title: "# of participants",
-    dataIndex: "_participants",
-    render: participants => participants.length
-    // width: "20%"
+    dataIndex: "participants.length"
   }
 ];
 

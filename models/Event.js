@@ -9,7 +9,7 @@ const eventSchema = new Schema({
   limit: { type: Number, required: false },
   faculty: { type: String, required: false },
   description: { type: String, required: false },
-  _participants: [{ type: Schema.Types.ObjectId, ref: "users" }]
+  participants: [{ type: Schema.Types.ObjectId, ref: "users" }]
 });
 
 mongoose.model("events", eventSchema);
